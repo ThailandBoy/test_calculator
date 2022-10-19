@@ -3,24 +3,28 @@ import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
         String cons_expr = sc.nextLine();
-        String expr = cons_expr.replaceAll(" ","").toUpperCase();
+        String result = calc(cons_expr);
+        System.out.println(result);
+    }
+    public static String calc(String cons_expr){
 
+        String expr = cons_expr.replaceAll(" ","").toUpperCase();
         pattern_exception(expr);
 
+        String str_result;
         String[] arrexpr;
         arrexpr = data_extract(expr);
 
         value_exception(arrexpr);
 
-        math_operation(arrexpr);
-
+        str_result = math_operation(arrexpr);
+        return str_result;
     }
-    static void math_operation(String[] arrexpr){
+    static String math_operation(String[] arrexpr){
 
-        String str_num01="",str_num02="";
+        String str_num01="",str_num02="", str_result="";
         int int_num01,int_num02, int_result;
 
         String math_op = arrexpr[1];
@@ -33,10 +37,11 @@ public class Main {
             int_num01 = Integer.parseInt(str_num01);
             int_num02 = Integer.parseInt(str_num02);
             int_result = math_switch_ar(int_num01, int_num02, math_op);
-            System.out.println(int_result);
+            str_result = Integer.toString(int_result);
         }else{
-            roman_operation(str_num01,str_num02, math_op);
+            str_result = roman_operation(str_num01,str_num02, math_op);
         }
+        return str_result;
     }
     static int math_switch_ar(int var01, int var02, String math_op){
         int int_result=0;
@@ -78,13 +83,13 @@ public class Main {
         }
         return int_result;
     }
-    static void roman_operation(String str_num01, String str_num02, String math_op){
+    static String roman_operation(String str_num01, String str_num02, String math_op){
 
         int[] ar_arr = new int[]{1,2,3,4,5,6,7,8,9,10};
         String[] ro_arr = new String[]{"I","II","III","IV","V","VI","VII","VIII","IX","X"};
 
         int arr_index01=0,arr_index02=0,int_result;
-        String buffer="";
+        String buffer="",str_result;
 
         for (int i=0; i < ro_arr.length; i++){
             buffer = ro_arr[i];
@@ -101,9 +106,10 @@ public class Main {
         int int_num02 = ar_arr[arr_index02];
 
         int_result = math_switch_ro(int_num01, int_num02, math_op);
-        to_roman(int_result);
+        str_result = to_roman(int_result);
+        return str_result;
     }
-    static void to_roman(int value){
+    static String to_roman(int value){
 
         int[] ar_arr = new int[]{100,90,50,40,10,9,5,4,1};
         String[] ro_arr = new String[]{"C","XC","L","XL","X","IX","V","IV","I"};
@@ -116,7 +122,7 @@ public class Main {
                 value -= ar_arr[i];
             }
         }
-        System.out.println(result);
+        return result;
     }
     static void pattern_exception(String expr){
         String arabic_pattern = "^([0-9]{1,2})([/+*-])([0-9]{1,2})$"; // Arabic numbers only
